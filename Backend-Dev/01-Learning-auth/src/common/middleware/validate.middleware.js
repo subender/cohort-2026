@@ -14,3 +14,5 @@ const validate = (DtoClass)=>{
     }
 
 }
+
+export default validate;
