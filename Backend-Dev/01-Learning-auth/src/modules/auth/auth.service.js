@@ -1,11 +1,11 @@
-import ApiError from "../../common/utils/api-error";
-import { generateResetToken } from "../../common/utils/jwt.utils"
+import ApiError from "../../common/utils/api-error.js";
+import { generateResetToken } from "../../common/utils/jwt.utils.js"
 import  User from "../auth/auth.model.js";
 
 const register = async ({name, email, password, role})=>{
 
     
-    const existing = await User.findOne("email");
+    const existing = await User.findOne({email});
     
     if (existing) throw ApiError.conflict('Email already exists.');
     

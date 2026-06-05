@@ -7,3 +7,5 @@ const register = async (req, res)=>{
     ApiResponse.created(res, 'Registration Successful. Please verify your email.', user)
     
 }
+
+export {register}
