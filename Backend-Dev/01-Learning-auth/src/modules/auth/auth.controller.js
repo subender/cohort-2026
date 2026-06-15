@@ -8,4 +8,18 @@ const register = async (req, res)=>{
     
 }
 
-export {register}
+
+
+const login = async (req, res, next)=>{
+    
+    
+    try {
+        
+ const {user, accessToken, refreshToken} = await authService.login(req.body)
+ ApiResponse.ok(res, "Login Successful", user)
+    } catch (error) {
+        next(error)
+    }
+
+}
+export {register, login}
