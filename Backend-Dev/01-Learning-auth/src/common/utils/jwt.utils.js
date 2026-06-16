@@ -29,10 +29,10 @@ const generateRefreshToken = (payload)=>{
 
 
 const verifyRefreshToken = (token)=>{
-    return jwt.verify(token, JWT_REFRESH_TOKEN_SECRET)
+    return jwt.verify(token, process.env.JWT_REFRESH_TOKEN_SECRET)
 }
 
 
 
 
-export {generateResetToken, generateAccessToke, generateRefreshToken, verifyAccessToken, }
+export {generateResetToken, generateAccessToke, generateRefreshToken, verifyAccessToken, verifyRefreshToken}

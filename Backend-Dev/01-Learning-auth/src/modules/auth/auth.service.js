@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import  User from "../auth/auth.model.js";
 import ApiError from "../../common/utils/api-error.js";
-import { generateAccessToke, generateRefreshToken, generateResetToken } from "../../common/utils/jwt.utils.js"
+import { generateAccessToke, generateRefreshToken, generateResetToken, verifyAccessToken, verifyRefreshToken } from "../../common/utils/jwt.utils.js"
 
 
 const hashToken = (token) =>
@@ -60,7 +60,28 @@ const login = async ({email, password})=>{
 }
 
 
+const refresh = async (token) => {
+  if (!token) throw ApiError.unauthorized("Refresh token missing");
+
+  const decoded = verifyRefreshToken(token);
+
+  const user = await User.findById(decoded.id).select("+refreshToken");
+
+  if (!user) throw ApiError.unauthorized("User no longer exist");
+
+  if (user.refreshToken !== hashToken(token)) {
+    throw ApiError.unauthorized("Invalid refresh token. Please login again.");
+  }
+
+  const accessToken = generateAccessToke({ id: user._id, role: user.role });
+
+  return { accessToken };
+};
+
+
+
 export{
     register,
-    login
+    login,
+    refresh
 }
