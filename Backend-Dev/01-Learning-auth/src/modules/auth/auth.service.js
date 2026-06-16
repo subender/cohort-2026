@@ -79,9 +79,15 @@ const refresh = async (token) => {
 };
 
 
+const logout = async (id)=>{
+    await User.findByIdAndUpdate(id, {refreshToken: null})
+}
+
+
 
 export{
     register,
     login,
-    refresh
+    refresh,
+    logout
 }

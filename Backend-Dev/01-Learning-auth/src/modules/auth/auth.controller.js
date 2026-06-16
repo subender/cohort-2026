@@ -16,12 +16,15 @@ const login = async (req, res, next) => {
       req.body
     );
 
-    res.cookie("refreshToken", refreshToken, {
+    const options = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000
-    })
+    }
+
+    res.cookie("refreshToken", refreshToken,  options)
+    res.cookie("accessToken", accessToken,  options)
 
     ApiResponse.ok(res, "Login Successful", user);
   } catch (error) {
@@ -37,4 +40,11 @@ const refreshToken = async (req, res) =>{
 
 }
 
-export {register, login, refreshToken}
+const logout = async (req, res)=>{
+    await authService.logout(req.user.id)
+
+    res.clearCookie("refreshToken")
+    ApiResponse.ok(res, "Logout Successfully")
+}
+
+export {register, login, refreshToken, logout}
