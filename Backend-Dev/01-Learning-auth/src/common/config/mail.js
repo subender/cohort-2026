@@ -26,7 +26,7 @@ const sendVerificationEmail = async (email, token)=>{
     await sendEmail(
         email,
         "verify your email",
-        `<h2>Welcome!</h2><p>Click <a href="${url}">here</a> to verify your email.</p>`,
+        `<h2>Welcome!</h2><p>Click <a href="${url}">here</a> to verify your email.</p>`, 
     )
 }
 

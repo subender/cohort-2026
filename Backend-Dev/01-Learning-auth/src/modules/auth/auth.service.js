@@ -5,6 +5,7 @@ import { generateAccessToke, generateRefreshToken, generateResetToken, verifyAcc
 import { sendVerificationEmail } from "../../common/config/mail.js";
 
 
+
 const hashToken = (token) =>
   crypto.createHash("sha256").update(token).digest("hex");
 
@@ -91,10 +92,32 @@ const logout = async (id)=>{
 }
 
 
+const verifyEmail = async (token)=>{
+  const cleanToken = String(token).trim()
+
+  if(!cleanToken) throw ApiError.badRequest("Invalid or Expired verification token");
+
+  const receivedHashedToken = hashToken(cleanToken);
+
+  let user = await User.findOne({verificationToken: receivedHashedToken}).select("+verificationToken");
+
+
+  if(!user) throw ApiError.badRequest("Invalid or Expired verification token");
+
+  await User.findByIdAndUpdate(user._id,{
+      $set: {isVerified: true},
+      $unset: {verificationToken: 1}
+  })
+
+  return user
+
+}
+
 
 export{
     register,
     login,
     refresh,
-    logout
+    logout,
+    verifyEmail
 }

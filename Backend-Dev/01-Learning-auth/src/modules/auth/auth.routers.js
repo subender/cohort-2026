@@ -11,6 +11,7 @@ router.post("/register", validate(RegisterDto),  controller.register)
 router.post("/login", validate(LoginDto), controller.login )
 router.post("/refresh-token", controller.refreshToken)
 router.post("/logout", authenticate, controller.logout )
+router.get("/verify-email/:token",  controller.verifyEmail)
 
 
 export default router
