@@ -2,6 +2,7 @@ import crypto from "crypto";
 import  User from "../auth/auth.model.js";
 import ApiError from "../../common/utils/api-error.js";
 import { generateAccessToke, generateRefreshToken, generateResetToken, verifyAccessToken, verifyRefreshToken } from "../../common/utils/jwt.utils.js"
+import { sendVerificationEmail } from "../../common/config/mail.js";
 
 
 const hashToken = (token) =>
@@ -28,6 +29,12 @@ const register = async ({name, email, password, role})=>{
     delete userObj.password
     delete userObj.verificationToken;
 
+
+    try {
+      await sendVerificationEmail(email,rawToken)
+    } catch (error) {
+      console.error("Failed to send verification email:", error.message)
+    }
 
     return userObj;
 
