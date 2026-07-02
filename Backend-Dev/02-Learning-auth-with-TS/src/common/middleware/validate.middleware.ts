@@ -23,3 +23,5 @@ const validate = <T extends ZodType> (schema: T) =>{
         }
     }
 }
+
+export default validate;
